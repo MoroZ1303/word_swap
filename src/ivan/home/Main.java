@@ -21,6 +21,24 @@ public class Main
         return lines;
     }
 
+    public static Boolean isDel(String s)
+    {
+        if (s.equals(" ")
+                || s.equals(",")
+                || s.equals(".")
+                ||s.equals("\t")
+                ||s.equals("\n")
+                ||s.equals("!")
+                ||s.equals("?")
+                ||s.equals(":")
+                || s.equals(";")
+                || s.equals("-"))
+        {
+            return true;
+        }
+        return false;
+    }
+
     public static String swapLetter(String str,String oldWord, String newWord)
     {
         String newStr = "";
@@ -28,18 +46,40 @@ public class Main
         {
             String blank = " ";
             String c = str.substring(i,i+1);
-            if((i==0 || c.equals(blank))&& i+oldWord.length() <= str.length())
+            if(i==0 && i+oldWord.length() <= str.length() && !isDel(str.substring(0,1)))
             {
-                if(oldWord.equals(str.substring(i+1,i+1+oldWord.length())))
+                if(oldWord.equals(str.substring(i,i+oldWord.length())))
                 {
-                    if (str.substring(i+oldWord.length()+1,i+oldWord.length()+2).equals(blank))
+                    if ((i+oldWord.length() == str.length()))
                     {
-                        newStr= newStr + " " + newWord;
-                        i = i+ oldWord.length()+1;
+                        newStr= newStr + newWord;
+                        i = i+ oldWord.length();
+                    }
+                    else if (isDel(str.substring(i+oldWord.length(),i+oldWord.length()+1)))
+                    {
+                        newStr= newStr + newWord;
+                        i = i+ oldWord.length() - 1;
                     }
                 }
             }
-            newStr =newStr+c;
+            else if(isDel(c) && i+oldWord.length() + 1 <= str.length())
+            {
+                newStr += c;
+                if(oldWord.equals(str.substring(i+1,i+1+oldWord.length())))
+                {
+                    if ((i+oldWord.length()+1 == str.length()))
+                    {
+                        newStr= newStr + newWord;
+                        i = i+ oldWord.length()+1;
+                    }
+                    else if (isDel(str.substring(i+oldWord.length()+1,i+oldWord.length()+2)))
+                    {
+                        newStr= newStr + newWord;
+                        i = i+ oldWord.length();
+                    }
+                }
+            }
+            else newStr =newStr+c;
             System.out.println(newStr);
         }
 
@@ -53,7 +93,7 @@ public class Main
         {
             String s = itr.next();
             System.out.println(s);
-            swapLetter(s,"every one","noone");
+            swapLetter(s,"a","bb");
             System.out.println(s);
         }
     }
